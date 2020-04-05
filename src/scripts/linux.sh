@@ -24,6 +24,20 @@ update_ppa() {
   fi
 }
 
+# Function to setup pre-requisites
+pre_setup() {
+  sudo mkdir -p /var/run /run/php
+  if [ "$runner" = "self-hosted" ]; then
+    if ! command -v apt-fast >/dev/null; then
+      sudo ln -sf /usr/bin/apt-get /usr/bin/apt-fast
+    fi
+    if ! apt-cache policy | grep -q ondrej/php; then
+      sudo apt-add-repository ppa:ondrej/php -y
+      update_ppa
+    fi
+  fi
+}
+
 # Function to configure PECL
 configure_pecl() {
   if [ "$pecl_config" = "false" ] && [ -e /usr/bin/pecl ]; then
@@ -313,11 +327,11 @@ apt_install="sudo $debconf_fix apt-fast install -y"
 tool_path_dir="/usr/local/bin"
 existing_version=$(php-config --version 2>/dev/null | cut -c 1-3)
 [[ -z "${update}" ]] && update='false' || update="${update}"
+[[ -z "${runner}" ]] && runner='github' || runner="${runner}"
 
 # Setup PHP
 step_log "Setup PHP"
-sudo mkdir -p /var/run /run/php
-
+pre_setup >/dev/null 2>&1
 if [ "$existing_version" != "$version" ]; then
   if [ ! -e "/usr/bin/php$version" ]; then
     if [ "$version" = "8.0" ]; then
