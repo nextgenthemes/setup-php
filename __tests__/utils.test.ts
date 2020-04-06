@@ -29,7 +29,9 @@ describe('Utils tests', () => {
   it('checking asyncForEach', async () => {
     const array: Array<string> = ['a', 'b', 'c'];
     let concat = '';
-    await utils.asyncForEach(array, async function(str: string): Promise<void> {
+    await utils.asyncForEach(array, async function (
+      str: string
+    ): Promise<void> {
       concat += str;
     });
     expect(concat).toBe('abc');
@@ -68,7 +70,10 @@ describe('Utils tests', () => {
     const runner_dir: string = process.env['RUNNER_TOOL_CACHE'] || '';
     const script_path: string = path.join(runner_dir, 'test.sh');
     await utils.writeScript('test.sh', testString);
-    await fs.readFile(script_path, function(error: Error | null, data: Buffer) {
+    await fs.readFile(script_path, function (
+      error: Error | null,
+      data: Buffer
+    ) {
       expect(testString).toBe(data.toString());
     });
     await cleanup(script_path);
@@ -155,8 +160,8 @@ describe('Utils tests', () => {
 
   it('checking suppressOutput', async () => {
     expect(await utils.suppressOutput('win32')).toEqual(' >$null 2>&1');
-    expect(await utils.suppressOutput('linux')).toEqual(' >/dev/null 2>&1');
-    expect(await utils.suppressOutput('darwin')).toEqual(' >/dev/null 2>&1');
+    expect(await utils.suppressOutput('linux')).toEqual(' ');
+    expect(await utils.suppressOutput('darwin')).toEqual(' ');
     expect(await utils.suppressOutput('fedora')).toContain(
       'Platform fedora is not supported'
     );

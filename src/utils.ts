@@ -186,7 +186,7 @@ export async function extensionArray(
     default:
       return extension_csv
         .split(',')
-        .map(function(extension: string) {
+        .map(function (extension: string) {
           return extension
             .trim()
             .toLowerCase()
@@ -211,7 +211,7 @@ export async function CSVArray(values_csv: string): Promise<Array<string>> {
     default:
       return values_csv
         .split(',')
-        .map(function(value: string) {
+        .map(function (value: string) {
           return value.trim();
         })
         .filter(Boolean);
@@ -246,7 +246,7 @@ export async function suppressOutput(os_version: string): Promise<string> {
       return ' >$null 2>&1';
     case 'linux':
     case 'darwin':
-      return ' >/dev/null 2>&1';
+      return ' ';
     default:
       return await log(
         'Platform ' + os_version + ' is not supported',
