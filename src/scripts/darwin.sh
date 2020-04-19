@@ -165,6 +165,9 @@ existing_version=$(php-config --version | cut -c 1-3)
 
 # Setup PHP
 step_log "Setup PHP"
+if [ "$version" = "8.0" ]; then
+  brew update >/dev/null 2>&1
+fi
 if [ "$existing_version" != "$version" ]; then
   export HOMEBREW_NO_INSTALL_CLEANUP=TRUE >/dev/null 2>&1
   brew tap shivammathur/homebrew-php >/dev/null 2>&1
