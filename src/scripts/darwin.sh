@@ -186,6 +186,9 @@ existing_version=$(php-config --version | cut -c 1-3)
 
 # Setup PHP
 step_log "Setup PHP"
+if [ "$version" = "8.0" ]; then
+  brew update >/dev/null 2>&1
+fi
 if [[ "$version" =~ $old_versions ]]; then
   curl -sSL https://github.com/shivammathur/php5-darwin/releases/latest/download/install.sh | bash -s "$nodot_version" >/dev/null 2>&1 &&
   status="Installed"
